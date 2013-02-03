@@ -21,7 +21,8 @@ def main():
     pids= [pid for pid in os.listdir('/proc') if pid.isdigit()]
 
     for pid in pids:
-        name = open(os.path.join('/proc', pid, 'cmdline'), 'rb').read(100)
+        with open(os.path.join('/proc', pid, 'cmdline'), 'rb') as fh:
+            name = fh.read(100)
         if re.match(UBUNTU_CHROME_PROCESS_BIN, name):
             os.kill(int(pid), signal.SIGKILL)
 
